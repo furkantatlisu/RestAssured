@@ -5,7 +5,6 @@ public class Basics {
         //when -- submit the API
         //then -- validate the response
 
-
     }
 
 }
