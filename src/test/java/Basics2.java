@@ -26,6 +26,7 @@ public class Basics2 {
         System.out.println(response);
         JsonPath js = new JsonPath(response);             //Sring formatını json formatına çeviriyor.
         String placeId = js.getString("place_id");  //place_id nin parent ya da child ı olmadığı için direkt çağrıldı.
+        System.out.println("place_id: " + placeId);
     }
 
 }
