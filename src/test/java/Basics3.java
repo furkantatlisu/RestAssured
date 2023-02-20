@@ -1,10 +1,14 @@
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
+import org.testng.Assert;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
 //Burada Basics2 class ına ek olarak,
+// alınan place id ile adresin güncellenip güncellenmediği kontrol edildi.
+//Assert için TestNG pom.xml içerisine eklendi.
+//jsonpath için reusable diye class oluşturuldu ve okunabilirlik artırıldı.
 
 public class Basics3 {
     public static void main(String[] args) {
@@ -22,18 +26,18 @@ public class Basics3 {
                 .then().assertThat().statusCode(200).body("scope",equalTo("APP"))
                 .header("Server","Apache/2.4.41 (Ubuntu)").extract().response().asString();
         System.out.println(response);
-        JsonPath js = new JsonPath(response);             //Sring formatını json formatına çeviriyor.
+        JsonPath js = reusableMethods.rowToJson(response);             //Sring formatını json formatına çeviriyor.
         String placeId = js.getString("place_id");  //place_id nin parent ya da child ı olmadığı için direkt çağrıldı.
         System.out.println("place_id: " + placeId);
 
         System.out.println("\n**************************\n");
 
         //Update place with new address
-
+        String newAddress = "Umraniye/Istanbul";
         given().log().all().queryParam("key", "qaclick123").queryParam("place_id",placeId)
                 .body("{\n" +
                         "\"place_id\":\""+placeId+"\",\n" +
-                        "\"address\":\"Umraniye/Istanbul\",\n" +
+                        "\"address\":\""+newAddress+"\",\n" +
                         "\"key\":\"qaclick123\"\n" +
                         "}")
                 .when().put("maps/api/place/update/json")
@@ -46,8 +50,9 @@ public class Basics3 {
         String getPlaceResponse = given().log().all().queryParam("key","qaclick123").queryParam("place_id",placeId)
                 .when().get("maps/api/place/get/json")
                 .then().log().all().assertThat().statusCode(200).extract().response().asString();
-        JsonPath js1 = new JsonPath(getPlaceResponse);
+        JsonPath js1 = reusableMethods.rowToJson(getPlaceResponse);    //Jsonpath objesi için metot oluşturuldu.
         String address = js1.getString("address");
+        Assert.assertEquals(address,newAddress);
         System.out.println(address);
 
     }
