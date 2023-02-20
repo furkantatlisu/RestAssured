@@ -5,6 +5,8 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
 //Burada Basics1 class ına ek olarak, response da eklenilen log kaldırıldı,
+// String formatındaki response json ile parse edilerek id çekildi
+//put metodu ile adres güncellendi.
 
 public class Basics2 {
     public static void main(String[] args) {
@@ -36,8 +38,6 @@ public class Basics2 {
                         "}")
                 .when().put("maps/api/place/update/json")
                 .then().log().all().assertThat().statusCode(200).body("msg",equalTo("Address successfully updated"));
-
-
     }
 
 }
