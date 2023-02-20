@@ -1,10 +1,13 @@
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
+import org.testng.Assert;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
 //Burada Basics2 class ına ek olarak,
+// alınan place id ile adresin güncellenip güncellenmediği kontrol edildi.
+//Assert için TestNG pom.xml içerisine eklendi.
 
 public class Basics3 {
     public static void main(String[] args) {
@@ -29,11 +32,11 @@ public class Basics3 {
         System.out.println("\n**************************\n");
 
         //Update place with new address
-
+        String newAddress = "Umraniye/Istanbul";
         given().log().all().queryParam("key", "qaclick123").queryParam("place_id",placeId)
                 .body("{\n" +
                         "\"place_id\":\""+placeId+"\",\n" +
-                        "\"address\":\"Umraniye/Istanbul\",\n" +
+                        "\"address\":\""+newAddress+"\",\n" +
                         "\"key\":\"qaclick123\"\n" +
                         "}")
                 .when().put("maps/api/place/update/json")
@@ -48,6 +51,7 @@ public class Basics3 {
                 .then().log().all().assertThat().statusCode(200).extract().response().asString();
         JsonPath js1 = new JsonPath(getPlaceResponse);
         String address = js1.getString("address");
+        Assert.assertEquals(address,newAddress);
         System.out.println(address);
 
     }
