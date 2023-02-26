@@ -1,11 +1,15 @@
 import io.restassured.path.json.JsonPath;
+import org.testng.Assert;
 
 public class Basics4 {
     //Elimizde henüz bir response yoksa ve developer ekibinden api henüz gelmemişse,
     //Onları beklemek yerine mock response yani data oluşturup işlemlerimize o şekilde devam edebiliyoruz.
 
     public static void main(String[] args) {
+
         JsonPath js = new JsonPath(payLoad.coursePrice());  //herhangi bir request atılmadan mock response işlenmiş oldu
+
+
         int count = js.getInt("courses.size");  //printed number of courses returned by API
         System.out.println(count);
         System.out.println("1***********");
@@ -47,8 +51,6 @@ public class Basics4 {
             sum = sum + amount;
         }
         System.out.println(sum);
-        System.out.println(purchaseAmount);
-        System.out.println("6***********");
-
+        Assert.assertEquals(sum,purchaseAmount,"they are equal");
     }
 }
