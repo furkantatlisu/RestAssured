@@ -1,3 +1,6 @@
+import io.restassured.RestAssured;
+import static io.restassured.RestAssured.given;
+
 public class payLoad {
 
     public static String addPlace(){
@@ -43,6 +46,17 @@ public class payLoad {
                 "}\n" +
                 "]\n" +
                 "}\n";
+    }
+    public static String AddBook(){
+
+        String payload = "{\n" +
+                "\n" +
+                "\"name\":\"Learn Appium Automation with Java\",\n" +
+                "\"isbn\":\"bcd\",\n" +
+                "\"aisle\":\"58\",\n" +
+                "\"author\":\"John foe\"\n" +
+                "}\n";
+        return payload;
     }
 
 }
